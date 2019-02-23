@@ -180,6 +180,7 @@ final class GoogleMapController
     googleMap.setOnCameraMoveListener(this);
     googleMap.setOnCameraIdleListener(this);
     googleMap.setOnMarkerClickListener(this);
+    googleMap.setOnMapClickListener(this);
     googleMap.setOnMapLongClickListener(this);
     updateMyLocationEnabled();
   }

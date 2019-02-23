@@ -88,15 +88,13 @@ class GoogleMapController extends ChangeNotifier {
         }
         break;
       case 'map#onTap':
-        final String targetJson = call.arguments['target'];
-        final LatLng target = LatLng.fromJson(targetJson);
+        final LatLng target = LatLng.fromJson(call.arguments['target']);
         if(target != null) {
           onMapTapped(target);
         }
         break;
       case 'map#onLongTap':
-        final String targetJson = call.arguments['target'];
-        final LatLng target = LatLng.fromJson(targetJson);
+        final LatLng target = LatLng.fromJson(call.arguments['target']);
         if(target != null) {
           onMapLongTapped(target);
         }
