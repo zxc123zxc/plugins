@@ -43,6 +43,12 @@ class GoogleMapController extends ChangeNotifier {
   /// Callbacks to receive tap events for markers placed on this map.
   final ArgumentCallbacks<Marker> onMarkerTapped = ArgumentCallbacks<Marker>();
 
+  /// Callbacks to receive tap events for this map.
+  final ArgumentCallbacks<LatLng> onMapTapped = ArgumentCallbacks<LatLng>();
+
+  /// Callbacks to receive long tap events for this map.
+  final ArgumentCallbacks<LatLng> onMapLongTapped = ArgumentCallbacks<LatLng>();
+
   /// Callbacks to receive tap events for info windows on markers
   final ArgumentCallbacks<Marker> onInfoWindowTapped =
       ArgumentCallbacks<Marker>();
@@ -79,6 +85,20 @@ class GoogleMapController extends ChangeNotifier {
         final Marker marker = _markers[markerId];
         if (marker != null) {
           onMarkerTapped(marker);
+        }
+        break;
+      case 'map#onTap':
+        final String targetJson = call.arguments['target'];
+        final LatLng target = LatLng.fromJson(targetJson);
+        if(target != null) {
+          onMapTapped(target);
+        }
+        break;
+      case 'map#onLongTap':
+        final String targetJson = call.arguments['target'];
+        final LatLng target = LatLng.fromJson(targetJson);
+        if(target != null) {
+          onMapLongTapped(target);
         }
         break;
       case 'camera#onMoveStarted':

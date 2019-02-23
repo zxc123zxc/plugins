@@ -25,6 +25,7 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,6 +46,8 @@ final class GoogleMapController
         GoogleMap.OnCameraMoveStartedListener,
         GoogleMap.OnInfoWindowClickListener,
         GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnMapLongClickListener,
         GoogleMapOptionsSink,
         MethodChannel.MethodCallHandler,
         OnMapReadyCallback,
@@ -177,6 +180,7 @@ final class GoogleMapController
     googleMap.setOnCameraMoveListener(this);
     googleMap.setOnCameraIdleListener(this);
     googleMap.setOnMarkerClickListener(this);
+    googleMap.setOnMapLongClickListener(this);
     updateMyLocationEnabled();
   }
 
@@ -281,6 +285,20 @@ final class GoogleMapController
   public boolean onMarkerClick(Marker marker) {
     final MarkerController markerController = markers.get(marker.getId());
     return (markerController != null && markerController.onTap());
+  }
+
+  @Override
+  public void onMapClick(LatLng latLng) {
+      final Map<String, Object> arguments = new HashMap<>(2);
+      arguments.put("target", Convert.toJson(latLng));
+      methodChannel.invokeMethod("map#onTap", arguments);
+  }
+
+  @Override
+  public void onMapLongClick(LatLng latLng) {
+    final Map<String, Object> arguments = new HashMap<>(2);
+    arguments.put("target", Convert.toJson(latLng));
+    methodChannel.invokeMethod("map#onLongTap", arguments);
   }
 
   @Override
